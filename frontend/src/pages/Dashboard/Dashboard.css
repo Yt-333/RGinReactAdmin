@@ -1,0 +1,41 @@
+/* Dashboard — 仅保留页面级布局样式（组件样式已移至 CSS Modules） */
+
+.dashboard {
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+.dashboard-loading {
+  text-align: center; padding: 80px 0;
+  color: var(--color-text-dim); font-size: 14px;
+}
+
+/* 入场动画 stagger */
+.dashboard.stagger-entrance > * {
+  opacity: 0;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.dashboard.stagger-entrance > *:nth-child(1) { animation-delay: 0.04s; }
+.dashboard.stagger-entrance > *:nth-child(2) { animation-delay: 0.12s; }
+.dashboard.stagger-entrance > *:nth-child(3) { animation-delay: 0.20s; }
+.dashboard.stagger-entrance > *:nth-child(4) { animation-delay: 0.28s; }
+.dashboard.stagger-entrance > *:nth-child(5) { animation-delay: 0.36s; }
+.dashboard.stagger-entrance > *:nth-child(6) { animation-delay: 0.44s; }
+
+/* 统计卡片网格 */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  perspective: 1200px;
+}
+.dashboard-content {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.dashboard-panel-full {
+  grid-column: 1 / -1;
+}
+
+/* 响应式 */
+@media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .dashboard-content { grid-template-columns: 1fr; }
+}

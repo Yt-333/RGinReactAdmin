@@ -1,0 +1,272 @@
+/* ============================================================
+   如意后台 · 科技感视觉体系 — 全局变量 & 基础样式
+   融合：暗色科技底 + 深色玻璃拟态 + 3D动效 + 霓虹发光
+
+   ⚠️  注意：
+   - CSS 变量的默认值在 :root 中定义（暗夜科技蓝）
+   - 主题切换时，ThemeContext 通过 JS 覆盖这些变量到 :root
+   - 所有组件通过 var(--xxx) 引用变量 → 一个 switch 全局变色
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ═══ :root 默认值（暗夜科技蓝） ═══ */
+:root {
+  /* 基底色 */
+  --color-bg-deep:    #060b14;
+  --color-bg-base:    #0a0f1c;
+  --color-bg-raised:  #111827;
+  --color-bg-surface: #161d2e;
+
+  /* 主色调 */
+  --color-primary:      #0d1b2a;
+  --color-primary-dark: #060e18;
+  --color-neon:         #00d4ff;
+  --color-neon-dim:     #0891b2;
+  --color-accent:       #06b6d4;
+  --color-accent-light: #22d3ee;
+  --color-accent-glow:  rgba(0, 212, 255, 0.18);
+
+  /* 文字 */
+  --color-text:          #e2e8f0;
+  --color-text-bright:   #f1f5f9;
+  --color-text-secondary:#8899b4;
+  --color-text-dim:      #556680;
+  --color-text-neon:     #00d4ff;
+
+  /* 边框 */
+  --color-border:        rgba(0, 212, 255, 0.10);
+  --color-border-glow:   rgba(0, 212, 255, 0.20);
+  --color-border-bright: rgba(0, 212, 255, 0.40);
+  --color-border-light:  rgba(255, 255, 255, 0.06);
+
+  /* 功能色 */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger:  #ef4444;
+  --color-info:    #00d4ff;
+
+  /* 玻璃拟态 */
+  --glass-bg:         rgba(17, 24, 39, 0.65);
+  --glass-bg-strong:  rgba(17, 24, 39, 0.85);
+  --glass-bg-subtle:  rgba(17, 24, 39, 0.35);
+  --glass-border:     rgba(0, 212, 255, 0.12);
+  --glass-border-strong: rgba(0, 212, 255, 0.25);
+  --glass-blur:       12px;
+  --glass-blur-strong: 20px;
+
+  /* 布局 */
+  --header-height:  60px;
+  --sidebar-width:  230px;
+
+  /* 圆角 / 阴影 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --glow-neon: 0 0 12px rgba(0, 212, 255, 0.30), 0 0 2px rgba(0, 212, 255, 0.5);
+  --glow-card: 0 0 20px rgba(0, 212, 255, 0.08), 0 0 2px rgba(0, 212, 255, 0.15);
+
+  /* 背景特效 */
+  --bg-grid-color:     rgba(0, 212, 255, 0.025);
+  --bg-grid-sub-color: rgba(0, 212, 255, 0.012);
+  --bg-glow-color:     rgba(0, 212, 255, 0.04);
+
+  /* 字体 */
+  --font-display: 'Noto Serif SC', serif;
+  --font-body:    'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* 过渡 */
+  --transition-fast: 0.18s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============================================================
+   全局重置
+   ============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ============================================================
+   背景 — 使用主题变量的网格
+   ============================================================ */
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-bg-base);
+  background-color: var(--color-bg-base);
+
+  /* 双层科技网格（颜色来自 CSS 变量） */
+  background-image:
+    /* 大网格 (60px) */
+    linear-gradient(var(--bg-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid-color) 1px, transparent 1px),
+    /* 小网格 (20px) */
+    linear-gradient(var(--bg-grid-sub-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid-sub-color) 1px, transparent 1px);
+  background-size:
+    60px 60px,
+    60px 60px,
+    20px 20px,
+    20px 20px;
+  background-attachment: fixed;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 顶部径向光晕（颜色来自 CSS 变量） */
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse, var(--bg-glow-color) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   data-theme 选择器模式：亮色主题时调整滚动条等全局样式
+   ============================================================ */
+[data-theme="light"] body,
+body:has([data-theme="light"]) {
+  /* 亮色模式的全局微调在此 */
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: none;
+}
+
+/* ============================================================
+   科技感滚动条
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-glow);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.35);
+  box-shadow: 0 0 6px rgba(0, 212, 255, 0.2);
+}
+
+/* ============================================================
+   文本选中
+   ============================================================ */
+::selection {
+  background: rgba(0, 212, 255, 0.25);
+  color: #fff;
+}
+
+/* ============================================================
+   全局关键帧动画
+   ============================================================ */
+
+/* 光泽扫过 */
+@keyframes shineSweep {
+  0%   { left: -150%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 150%; opacity: 0; }
+}
+
+/* 扫描线 */
+@keyframes scanLine {
+  0%   { top: -2px; }
+  100% { top: 100%; }
+}
+
+/* 浮动粒子 */
+@keyframes floatUp1 {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  25%      { transform: translateY(-12px) translateX(6px); opacity: 0.7; }
+  50%      { transform: translateY(-20px) translateX(-2px); opacity: 0.4; }
+  75%      { transform: translateY(-8px) translateX(-8px); opacity: 0.6; }
+}
+@keyframes floatUp2 {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
+  33%      { transform: translateY(-16px) translateX(-4px); opacity: 0.6; }
+  66%      { transform: translateY(-6px) translateX(6px); opacity: 0.5; }
+}
+@keyframes floatUp3 {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.25; }
+  50%      { transform: translateY(-24px) translateX(3px); opacity: 0.65; }
+}
+
+/* 脉冲发光 */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 4px var(--glow-color, rgba(0,212,255,0.4)),
+                0 0 8px var(--glow-color, rgba(0,212,255,0.2));
+  }
+  50% {
+    box-shadow: 0 0 8px var(--glow-color, rgba(0,212,255,0.7)),
+                0 0 20px var(--glow-color, rgba(0,212,255,0.4)),
+                0 0 36px var(--glow-color, rgba(0,212,255,0.15));
+  }
+}
+
+/* 霓虹边框呼吸 */
+@keyframes neonPulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(0, 212, 255, 0.15), 0 0 1px rgba(0, 212, 255, 0.3); }
+  50%      { box-shadow: 0 0 12px rgba(0, 212, 255, 0.30), 0 0 3px rgba(0, 212, 255, 0.5); }
+}
+
+/* 入场动画 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes rowIndicatorIn {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* 旋转光环 */
+@keyframes conicSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* 浮动呼吸 */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* 侧边栏暗纹滚动 */
+@keyframes bgScrollDiag {
+  0%   { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
