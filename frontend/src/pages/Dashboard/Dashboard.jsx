@@ -53,8 +53,8 @@ export default function Dashboard() {
 
       {/* 统计卡片 */}
       <div className="stats-grid">
-        {data.stats.map((card) => (
-          <StatCard key={card.key} {...card} />
+        {data.stats.map(({ key, ...card }) => (
+          <StatCard key={key} {...card} />
         ))}
       </div>
 
