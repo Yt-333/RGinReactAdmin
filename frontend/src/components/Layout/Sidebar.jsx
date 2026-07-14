@@ -30,6 +30,16 @@ const menuItems = [
 export default function Sidebar() {
   const [activeKey, setActiveKey] = React.useState('dashboard')
 
+  /* 2. active 菜单项的光波追踪 — 设置 CSS 变量 --mx / --my */
+  const handleItemMouseMove = (e) => {
+    const el = e.currentTarget
+    const rect = el.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width)  * 100
+    const y = ((e.clientY - rect.top)  / rect.height) * 100
+    el.style.setProperty('--mx', `${x}%`)
+    el.style.setProperty('--my', `${y}%`)
+  }
+
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
@@ -46,6 +56,7 @@ export default function Sidebar() {
                 key={item.key}
                 className={`sidebar-item ${activeKey === item.key ? 'active' : ''}`}
                 onClick={() => setActiveKey(item.key)}
+                onMouseMove={activeKey === item.key ? handleItemMouseMove : undefined}
               >
                 <span className="sidebar-item-icon">{item.icon}</span>
                 <span>{item.label}</span>

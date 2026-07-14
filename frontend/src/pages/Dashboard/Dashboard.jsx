@@ -21,8 +21,25 @@ export default function Dashboard() {
     return 'cancelled'
   }
 
+  /* 1. 统计卡片 3D 倾斜 — 鼠标位置映射 rotateX/Y */
+  const handleCardMouseMove = (e) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    // 相对卡片中心的位置，归一化到 [-1, 1]
+    const x = ((e.clientX - rect.left) / rect.width  - 0.5) * 2
+    const y = ((e.clientY - rect.top)  / rect.height - 0.5) * 2
+    // 最大倾斜角度 ±8deg
+    const rotateY =  x * 8
+    const rotateX = -y * 8
+    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+  }
+
+  const handleCardMouseLeave = (e) => {
+    e.currentTarget.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)'
+  }
+
   return (
-    <div className="dashboard">
+    <div className="dashboard stagger-entrance">
       {/* 欢迎横幅 */}
       <div className="dashboard-banner">
         <div className="dashboard-banner-greeting">{getGreeting()}，欢迎回来</div>
@@ -36,7 +53,15 @@ export default function Dashboard() {
       {/* 统计卡片 */}
       <div className="stats-grid">
         {statsCards.map((card) => (
-          <div className="stat-card" key={card.key}>
+          <div
+            className="stat-card"
+            key={card.key}
+            onMouseMove={handleCardMouseMove}
+            onMouseLeave={handleCardMouseLeave}
+          >
+            {/* 1. 光泽扫过遮罩 */}
+            <div className="shine-overlay" />
+
             <div className="stat-card-header">
               <span className="stat-card-title">{card.title}</span>
               <span
@@ -106,6 +131,7 @@ export default function Dashboard() {
                       style={{
                         width: `${item.value}%`,
                         background: item.color,
+                        '--fill-color': item.color,
                       }}
                     />
                   </div>
