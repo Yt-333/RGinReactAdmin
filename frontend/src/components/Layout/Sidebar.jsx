@@ -1,67 +1,54 @@
-import React from 'react'
+/**
+ * Sidebar — 侧边栏导航
+ *
+ * 菜单数据来自 config/app.config.js 的 menuItems
+ * 使用 react-router-dom 的 NavLink 实现路由高亮
+ */
 
-const menuItems = [
-  {
-    section: '导航',
-    items: [
-      { key: 'dashboard', icon: '📊', label: '仪表盘', active: true },
-      { key: 'analytics', icon: '📈', label: '数据分析' },
-      { key: 'workspace', icon: '💼', label: '工作台' },
-    ]
-  },
-  {
-    section: '管理',
-    items: [
-      { key: 'users', icon: '👥', label: '用户管理' },
-      { key: 'roles', icon: '🔐', label: '角色权限' },
-      { key: 'logs', icon: '📋', label: '操作日志' },
-    ]
-  },
-  {
-    section: '内容',
-    items: [
-      { key: 'articles', icon: '📝', label: '文章管理' },
-      { key: 'media', icon: '🖼️', label: '媒体资源' },
-      { key: 'settings', icon: '⚙️', label: '系统设置' },
-    ]
-  },
-]
+import { useCallback } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
+import { appInfo, menuItems } from '../../config/app.config.js'
 
 export default function Sidebar() {
-  const [activeKey, setActiveKey] = React.useState('dashboard')
+  const location = useLocation()
 
-  /* 2. active 菜单项的光波追踪 — 设置 CSS 变量 --mx / --my */
-  const handleItemMouseMove = (e) => {
+  const handleItemMouseMove = useCallback((e) => {
     const el = e.currentTarget
     const rect = el.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width)  * 100
-    const y = ((e.clientY - rect.top)  / rect.height) * 100
-    el.style.setProperty('--mx', `${x}%`)
-    el.style.setProperty('--my', `${y}%`)
-  }
+    el.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`)
+    el.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`)
+  }, [])
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo">
-        <div className="sidebar-logo-icon">☁️</div>
-        <span className="sidebar-logo-text">如意后台</span>
-      </div>
+      <NavLink to="/" className="sidebar-logo">
+        <div className="sidebar-logo-icon">{appInfo.logo}</div>
+        <span className="sidebar-logo-text">{appInfo.shortName}</span>
+      </NavLink>
 
       <nav className="sidebar-nav">
         {menuItems.map((group) => (
           <div className="sidebar-section" key={group.section}>
             <div className="sidebar-section-title">{group.section}</div>
-            {group.items.map((item) => (
-              <div
-                key={item.key}
-                className={`sidebar-item ${activeKey === item.key ? 'active' : ''}`}
-                onClick={() => setActiveKey(item.key)}
-                onMouseMove={activeKey === item.key ? handleItemMouseMove : undefined}
-              >
-                <span className="sidebar-item-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </div>
-            ))}
+            {group.items.map((item) => {
+              const isActive =
+                item.path === '/'
+                  ? location.pathname === '/' || location.pathname === '/dashboard'
+                  : location.pathname.startsWith(item.path)
+
+              return (
+                <NavLink
+                  key={item.key}
+                  to={item.path}
+                  className={`sidebar-item ${isActive ? 'active' : ''}`}
+                  onMouseMove={isActive ? handleItemMouseMove : undefined}
+                  end={item.path === '/' || item.path === '/dashboard'}
+                >
+                  <span className="sidebar-item-icon">{item.icon}</span>
+                  <span>{item.label}</span>
+                </NavLink>
+              )
+            })}
           </div>
         ))}
       </nav>

@@ -1,21 +1,23 @@
 /* ============================================================
    如意后台 · 科技感视觉体系 — 全局变量 & 基础样式
    融合：暗色科技底 + 深色玻璃拟态 + 3D动效 + 霓虹发光
+
+   ⚠️  注意：
+   - CSS 变量的默认值在 :root 中定义（暗夜科技蓝）
+   - 主题切换时，ThemeContext 通过 JS 覆盖这些变量到 :root
+   - 所有组件通过 var(--xxx) 引用变量 → 一个 switch 全局变色
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+/* ═══ :root 默认值（暗夜科技蓝） ═══ */
 :root {
-  /* ═══════════════════════════════════════
-     暗色科技蓝基底
-     ═══════════════════════════════════════ */
+  /* 基底色 */
   --color-bg-deep:    #060b14;
   --color-bg-base:    #0a0f1c;
   --color-bg-raised:  #111827;
   --color-bg-surface: #161d2e;
 
-  /* ═══════════════════════════════════════
-     霓虹科技蓝主色调
-     ═══════════════════════════════════════ */
+  /* 主色调 */
   --color-primary:      #0d1b2a;
   --color-primary-dark: #060e18;
   --color-neon:         #00d4ff;
@@ -24,34 +26,26 @@
   --color-accent-light: #22d3ee;
   --color-accent-glow:  rgba(0, 212, 255, 0.18);
 
-  /* ═══════════════════════════════════════
-     文字色（暗底亮字）
-     ═══════════════════════════════════════ */
+  /* 文字 */
   --color-text:          #e2e8f0;
   --color-text-bright:   #f1f5f9;
   --color-text-secondary:#8899b4;
   --color-text-dim:      #556680;
   --color-text-neon:     #00d4ff;
 
-  /* ═══════════════════════════════════════
-     边框 & 发光（霓虹辉光体系）
-     ═══════════════════════════════════════ */
+  /* 边框 */
   --color-border:        rgba(0, 212, 255, 0.10);
   --color-border-glow:   rgba(0, 212, 255, 0.20);
   --color-border-bright: rgba(0, 212, 255, 0.40);
   --color-border-light:  rgba(255, 255, 255, 0.06);
 
-  /* ═══════════════════════════════════════
-     功能色（暗底适配）
-     ═══════════════════════════════════════ */
+  /* 功能色 */
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-danger:  #ef4444;
   --color-info:    #00d4ff;
 
-  /* ═══════════════════════════════════════
-     玻璃拟态变量（暗色玻璃系）
-     ═══════════════════════════════════════ */
+  /* 玻璃拟态 */
   --glass-bg:         rgba(17, 24, 39, 0.65);
   --glass-bg-strong:  rgba(17, 24, 39, 0.85);
   --glass-bg-subtle:  rgba(17, 24, 39, 0.35);
@@ -60,15 +54,11 @@
   --glass-blur:       12px;
   --glass-blur-strong: 20px;
 
-  /* ═══════════════════════════════════════
-     布局（保持不变）
-     ═══════════════════════════════════════ */
+  /* 布局 */
   --header-height:  60px;
   --sidebar-width:  230px;
 
-  /* ═══════════════════════════════════════
-     圆角 / 阴影 / 发光
-     ═══════════════════════════════════════ */
+  /* 圆角 / 阴影 */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
@@ -78,16 +68,17 @@
   --glow-neon: 0 0 12px rgba(0, 212, 255, 0.30), 0 0 2px rgba(0, 212, 255, 0.5);
   --glow-card: 0 0 20px rgba(0, 212, 255, 0.08), 0 0 2px rgba(0, 212, 255, 0.15);
 
-  /* ═══════════════════════════════════════
-     字体
-     ═══════════════════════════════════════ */
+  /* 背景特效 */
+  --bg-grid-color:     rgba(0, 212, 255, 0.025);
+  --bg-grid-sub-color: rgba(0, 212, 255, 0.012);
+  --bg-glow-color:     rgba(0, 212, 255, 0.04);
+
+  /* 字体 */
   --font-display: 'Noto Serif SC', serif;
   --font-body:    'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
-  /* ═══════════════════════════════════════
-     过渡
-     ═══════════════════════════════════════ */
+  /* 过渡 */
   --transition-fast: 0.18s ease;
   --transition-base: 0.25s ease;
   --transition-slow: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -109,22 +100,23 @@ html, body, #root {
 }
 
 /* ============================================================
-   科技网格背景 + 光晕
+   背景 — 使用主题变量的网格
    ============================================================ */
 body {
   font-family: var(--font-body);
   font-size: 14px;
   color: var(--color-text);
   background: var(--color-bg-base);
+  background-color: var(--color-bg-base);
 
-  /* 双层科技网格 */
+  /* 双层科技网格（颜色来自 CSS 变量） */
   background-image:
     /* 大网格 (60px) */
-    linear-gradient(rgba(0, 212, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(var(--bg-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid-color) 1px, transparent 1px),
     /* 小网格 (20px) */
-    linear-gradient(rgba(0, 212, 255, 0.012) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.012) 1px, transparent 1px);
+    linear-gradient(var(--bg-grid-sub-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid-sub-color) 1px, transparent 1px);
   background-size:
     60px 60px,
     60px 60px,
@@ -136,7 +128,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 顶部径向光晕 */
+/* 顶部径向光晕（颜色来自 CSS 变量） */
 body::before {
   content: '';
   position: fixed;
@@ -145,9 +137,25 @@ body::before {
   transform: translateX(-50%);
   width: 800px;
   height: 400px;
-  background: radial-gradient(ellipse, rgba(0, 212, 255, 0.04) 0%, transparent 70%);
+  background: radial-gradient(ellipse, var(--bg-glow-color) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* ============================================================
+   data-theme 选择器模式：亮色主题时调整滚动条等全局样式
+   ============================================================ */
+[data-theme="light"] body,
+body:has([data-theme="light"]) {
+  /* 亮色模式的全局微调在此 */
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: none;
 }
 
 /* ============================================================
@@ -161,7 +169,7 @@ body::before {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.15);
+  background: var(--color-border-glow);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
