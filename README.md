@@ -1,0 +1,2 @@
+# RGinReactAdmin
+使用Gin框架和React框架开发的前后端分离的纯AI驱动的现代管理系统
